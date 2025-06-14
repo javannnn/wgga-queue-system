@@ -1,12 +1,23 @@
 from flask import Flask, render_template, jsonify
 from dotenv import load_dotenv
+import logging
+from logging.handlers import RotatingFileHandler
 import os
 import requests
 
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 
+# Set up rotating file logger
+handler = RotatingFileHandler("backend.log", maxBytes=1_000_000, backupCount=1)
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
+
+# Gize API config
 GIZE_URL = os.getenv("GIZE_API_URL", "http://192.168.1.6/api/resource/Patient Appointment")
 AUTH = (
     os.getenv("GIZE_AUTH_USER", "8887ac7f9febb43"),
@@ -20,11 +31,12 @@ def dashboard():
 @app.route("/api/queue")
 def get_queue():
     try:
-        resp = requests.get(GIZE_URL, auth=AUTH)
+        resp = requests.get(GIZE_URL, auth=AUTH, timeout=5)
+        resp.raise_for_status()
         data = resp.json()
         return jsonify(data.get("data", []))
-    except Exception:
-        # fallback for testing
+    except Exception as exc:
+        app.logger.warning("Falling back to sample data: %s", exc)
         return jsonify([
             {
                 "name": "HLC-APP-2025-36943",
@@ -42,7 +54,7 @@ def get_queue():
                 "practitioner_name": "Dr. Example",
                 "department": "OPD",
             },
-        ])
+        ]), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

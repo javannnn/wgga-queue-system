@@ -3,9 +3,10 @@
 <head>
     <title>Now Serving - WGGA</title>
     <meta http-equiv="refresh" content="10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { background: #222; color: #fff; font-family: Arial, sans-serif; text-align: center; }
-        h1 { color: #1dc7ea; margin-top: 2em; }
+        h1 { color: #1dc7ea; margin-top: 2em; font-size: 2.5em; }
         .card {
             background: #282828;
             border-radius: 1em;
@@ -16,21 +17,43 @@
         }
         ul { list-style: none; padding: 0; margin: 0; }
         li { font-size: 2em; margin: 0.5em 0; }
+        .now { font-size: 3em; font-weight: bold; color: #1dc7ea; letter-spacing: 0.02em; }
+        .clock { margin-top: 2em; font-size: 1.2em; color: #aaa; }
+        @media (max-width: 700px) {
+            .card { padding: 1em; }
+            h1 { font-size: 1.3em; }
+            .now { font-size: 2em; }
+            li { font-size: 1.1em; }
+        }
     </style>
 </head>
 <body>
     <h1>Now Serving</h1>
     <div class="card">
         <ul>
-            {% for row in queue %}
-                <li>
-                    {{ row.patient_name or '-' }}
-                    <span style="font-size: 0.7em; color:#aaa;">({{ row.appointment_time_12 or '' }})</span>
-                </li>
+            {% if error %}
+                <li>Backend not available.</li>
             {% else %}
-                <li>No active queue.</li>
-            {% endfor %}
+                {% for row in queue %}
+                    <li class="{{ 'now' if loop.index <= 2 else '' }}">
+                        {{ row.patient_name or '-' }}
+                        <span style="font-size: 0.7em; color:#aaa;">({{ row.appointment_time_12 or '' }})</span>
+                    </li>
+                {% else %}
+                    <li>No active queue.</li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </div>
+    <div class="clock" id="clock"></div>
+    <script>
+        function updateClock(){
+            const el = document.getElementById('clock');
+            const d = new Date();
+            el.textContent = d.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
 </body>
 </html>

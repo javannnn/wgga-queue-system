@@ -2,12 +2,66 @@
 <html>
 <head>
     <title>Ticket Issued</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f8fb; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;}
-        .ticket { background: #fff; border: 2px dashed #1dc7ea; border-radius: 1em; padding: 2em 4em; margin-top: 2em; box-shadow: 0 2px 12px #aaf2;}
-        .ticket-number { font-size: 2.5em; color: #008cba; font-weight: bold;}
-        .info { font-size: 1.2em; margin-top: 1em;}
-        .ok { font-size: 1.1em; color: #2ba832; margin-top: 2em;}
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f8fb 60%, #1dc7ea15 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .ticket {
+            background: #fff;
+            border: 2px dashed #1dc7ea;
+            border-radius: 1em;
+            padding: 2em 2.5em 2em 2.5em;
+            margin-top: 2em;
+            box-shadow: 0 2px 12px #1dc7ea22;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 260px;
+            max-width: 90vw;
+        }
+        .ticket-number {
+            font-size: 2.6em;
+            color: #008cba;
+            font-weight: bold;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.2em;
+        }
+        .info {
+            font-size: 1.15em;
+            margin-top: 0.8em;
+        }
+        .ok {
+            font-size: 1.12em;
+            color: #2ba832;
+            margin-top: 2em;
+        }
+        .qr {
+            width: 98px; height: 98px;
+            background: repeating-linear-gradient(45deg, #008cba 0 12px, #fff 12px 24px);
+            border-radius: 8px;
+            margin: 1.2em 0 0.7em 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 8px #008cba11;
+        }
+        .label {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 0.1em;
+        }
+        @media (max-width: 480px) {
+            .ticket { padding: 1.2em 0.2em; }
+            .ticket-number { font-size: 1.7em; }
+        }
     </style>
 </head>
 <body>
@@ -15,7 +69,10 @@
         <div class="ticket-number">{{ ticket_number }}</div>
         <div class="info">Type: {{ ticket_type.capitalize() }}</div>
         <div class="info">Issued at: {{ issued_at }}</div>
+        <div class="qr"></div>
+        <div class="label">Present this at the reception</div>
         <div class="ok">Please take your seat and wait for your number.</div>
     </div>
+    <audio id="ding" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" autoplay></audio>
 </body>
 </html>
