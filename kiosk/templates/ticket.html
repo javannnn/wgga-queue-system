@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Issued</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f8fb; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;}
+        .ticket { background: #fff; border: 2px dashed #1dc7ea; border-radius: 1em; padding: 2em 4em; margin-top: 2em; box-shadow: 0 2px 12px #aaf2;}
+        .ticket-number { font-size: 2.5em; color: #008cba; font-weight: bold;}
+        .info { font-size: 1.2em; margin-top: 1em;}
+        .ok { font-size: 1.1em; color: #2ba832; margin-top: 2em;}
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <div class="ticket-number">{{ ticket_number }}</div>
+        <div class="info">Type: {{ ticket_type.capitalize() }}</div>
+        <div class="info">Issued at: {{ issued_at }}</div>
+        <div class="ok">Please take your seat and wait for your number.</div>
+    </div>
+</body>
+</html>

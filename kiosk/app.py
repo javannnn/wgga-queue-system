@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import random
+import datetime
 
 app = Flask(__name__)
 
@@ -6,5 +8,13 @@ app = Flask(__name__)
 def kiosk():
     return render_template("kiosk.html")
 
+@app.route("/ticket", methods=["POST"])
+def generate_ticket():
+    ticket_type = request.form["type"]
+    ticket_number = f"{ticket_type.upper()}-{random.randint(100,999)}"
+    issued_at = datetime.datetime.now().strftime("%H:%M:%S")
+    # TODO: integrate with printer hardware here
+    return render_template("ticket.html", ticket_number=ticket_number, issued_at=issued_at, ticket_type=ticket_type)
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7000)
+    app.run(host="0.0.0.0", port=7000, debug=True)

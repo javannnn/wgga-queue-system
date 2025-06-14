@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Now Serving - WGGA</title>
+    <meta http-equiv="refresh" content="10">
+    <style>
+        body { background: #222; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+        h1 { color: #1dc7ea; margin-top: 2em; }
+        .card {
+            background: #282828;
+            border-radius: 1em;
+            padding: 2em;
+            margin: 1em auto;
+            width: 90vw; max-width: 700px;
+            box-shadow: 0 8px 24px #0005;
+        }
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { font-size: 2em; margin: 0.5em 0; }
+    </style>
+</head>
+<body>
+    <h1>Now Serving</h1>
+    <div class="card">
+        <ul>
+            {% for row in queue %}
+                <li>
+                    {{ row.patient_name or '-' }}
+                    <span style="font-size: 0.7em; color:#aaa;">({{ row.appointment_time_12 or '' }})</span>
+                </li>
+            {% else %}
+                <li>No active queue.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
