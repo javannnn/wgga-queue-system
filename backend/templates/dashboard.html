@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WGGA Queue Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f8fb; color: #222; margin: 0; padding: 0; }
+        h1 { background: #008cba; color: white; padding: 1em; margin: 0; }
+        #filter { margin: 1em auto; width: 90%; max-width: 600px; display: block; padding: .5em; }
+        table { border-collapse: collapse; margin: 0 auto 2em; width: 90%; background: white; box-shadow: 0 0 6px #bbb; }
+        th, td { padding: 0.7em 1em; text-align: left; border-bottom: 1px solid #eee; }
+        thead th { background: #e9f5fb; position: sticky; top: 0; }
+        tr:hover { background: #f2f7fa; }
+        .status-Closed { color: #6c757d; font-weight: bold; }
+        .status-Open { color: #28a745; font-weight: bold; }
+        .status-Skipped { color: #dc3545; font-weight: bold; }
+        @media (max-width: 600px) {
+            table, th, td { font-size: .9em; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Queue Management Dashboard</h1>
+    <input id="filter" type="text" placeholder="Filter by name or status...">
+    <table id="queue">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Practitioner</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be loaded here -->
+        </tbody>
+    </table>
+    <script>
+        function fetchQueue() {
+            fetch('/api/queue').then(r=>r.json()).then(data=>{
+                const tbody = document.querySelector("#queue tbody");
+                tbody.innerHTML = "";
+                data.forEach(row=>{
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${row.patient_name||'-'}</td>
+                            <td>${row.appointment_time_12||'-'}</td>
+                            <td class="status-${row.status}">${row.status||'-'}</td>
+                            <td>${row.practitioner_name||'-'}</td>
+                            <td>${row.department||'-'}</td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+        const filterInput = document.getElementById('filter');
+        filterInput.addEventListener('input', ()=>{
+            const term = filterInput.value.toLowerCase();
+            document.querySelectorAll('#queue tbody tr').forEach(tr=>{
+                const text = tr.innerText.toLowerCase();
+                tr.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+        fetchQueue();
+        setInterval(fetchQueue, 5000);
+    </script>
+</body>
+</html>
