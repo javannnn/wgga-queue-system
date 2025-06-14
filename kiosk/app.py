@@ -6,7 +6,8 @@ from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 
-handler = RotatingFileHandler("kiosk.log", maxBytes=1000000, backupCount=1)
+# Set up rotating file logger
+handler = RotatingFileHandler("kiosk.log", maxBytes=1_000_000, backupCount=1)
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
 handler.setFormatter(formatter)
@@ -21,8 +22,8 @@ def generate_ticket():
     ticket_type = request.form["type"]
     ticket_number = f"{ticket_type.upper()}-{random.randint(100,999)}"
     issued_at = datetime.datetime.now().strftime("%H:%M:%S")
+    app.logger.info("Ticket issued %s (%s) at %s", ticket_number, ticket_type, issued_at)
     # TODO: integrate with printer hardware here
-    app.logger.info("Ticket issued %s", ticket_number)
     return render_template("ticket.html", ticket_number=ticket_number, issued_at=issued_at, ticket_type=ticket_type)
 
 if __name__ == "__main__":

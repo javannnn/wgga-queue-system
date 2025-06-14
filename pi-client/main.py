@@ -5,7 +5,8 @@ from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 
-handler = RotatingFileHandler("pi_client.log", maxBytes=1000000, backupCount=1)
+# Rotating file logger for Pi client
+handler = RotatingFileHandler("pi_client.log", maxBytes=1_000_000, backupCount=1)
 handler.setLevel(logging.INFO)
 formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
 handler.setFormatter(formatter)

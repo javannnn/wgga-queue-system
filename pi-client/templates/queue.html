@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { background: #222; color: #fff; font-family: Arial, sans-serif; text-align: center; }
-        h1 { color: #1dc7ea; margin-top: 2em; }
+        h1 { color: #1dc7ea; margin-top: 2em; font-size: 2.5em; }
         .card {
             background: #282828;
             border-radius: 1em;
@@ -17,8 +17,14 @@
         }
         ul { list-style: none; padding: 0; margin: 0; }
         li { font-size: 2em; margin: 0.5em 0; }
-        .now { font-size: 3em; font-weight: bold; }
+        .now { font-size: 3em; font-weight: bold; color: #1dc7ea; letter-spacing: 0.02em; }
         .clock { margin-top: 2em; font-size: 1.2em; color: #aaa; }
+        @media (max-width: 700px) {
+            .card { padding: 1em; }
+            h1 { font-size: 1.3em; }
+            .now { font-size: 2em; }
+            li { font-size: 1.1em; }
+        }
     </style>
 </head>
 <body>
