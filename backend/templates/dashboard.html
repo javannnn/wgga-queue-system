@@ -38,21 +38,25 @@
     </table>
     <script>
         function fetchQueue() {
-            fetch('/api/queue').then(r=>r.json()).then(data=>{
-                const tbody = document.querySelector("#queue tbody");
-                tbody.innerHTML = "";
-                data.forEach(row=>{
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${row.patient_name||'-'}</td>
-                            <td>${row.appointment_time_12||'-'}</td>
-                            <td class="status-${row.status}">${row.status||'-'}</td>
-                            <td>${row.practitioner_name||'-'}</td>
-                            <td>${row.department||'-'}</td>
-                        </tr>
-                    `;
-                });
-            });
+            fetch('/api/queue')
+                .then(r => r.json())
+                .then(data => {
+                    console.log('Queue data:', data);
+                    const tbody = document.querySelector("#queue tbody");
+                    tbody.innerHTML = "";
+                    data.forEach(row=>{
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${row.patient_name||'-'}</td>
+                                <td>${row.appointment_time_12||'-'}</td>
+                                <td class="status-${row.status}">${row.status||'-'}</td>
+                                <td>${row.practitioner_name||'-'}</td>
+                                <td>${row.department||'-'}</td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(err => console.error('Failed to fetch queue', err));
         }
         // Filter/search logic
         const filterInput = document.getElementById('filter');
