@@ -34,6 +34,8 @@ def get_queue():
         resp = requests.get(GIZE_URL, auth=AUTH, timeout=5)
         resp.raise_for_status()
         data = resp.json()
+        app.logger.info("Gize returned %d appointments", len(data.get("data", [])))
+        app.logger.debug("Gize response: %s", data)
         return jsonify(data.get("data", []))
     except Exception as exc:
         app.logger.warning("Falling back to sample data: %s", exc)
